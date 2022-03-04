@@ -1,0 +1,53 @@
+<div *ngIf="airlineDetails != null">
+  <div class="card">
+    <div class="card-body row mb-2">
+      <div class="col-md-6">
+        <img
+          src="{{ airlineDetails.logoPath }}"
+          height="100"
+          width="100"
+          class="rounded-circle"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <button class="btn btn-primary" (click)="onChangeStatus()">
+          Make
+          {{ this.airlineDetails?.status == "Active" ? "InActive" : "Active" }}
+        </button>
+      </div>
+    </div>
+    <div class="card-body row">
+      <div class="col-md-6">Name: {{ airlineDetails.name }}</div>
+      <div class="col-md-6">Contact No.: {{ airlineDetails.contactNo }}</div>
+      <div class="col-md-6">Address: {{ airlineDetails.contactAddress }}</div>
+      <div class="col-md-6">Status: {{ airlineDetails.status }}</div>
+    </div>
+  </div>
+  <table *ngIf="airlineDetails.inventories != null" class="table mt-3">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Flight#</th>
+        <th scope="col">From</th>
+        <th scope="col">To</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Scheduled Days</th>
+        <th scope="col">Meals</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let inventory of airlineDetails.inventories">
+        <td>{{ inventory.flightNumber }}</td>
+        <td>{{ inventory.fromPlace }}</td>
+        <td>{{ inventory.toPlace }}</td>
+        <td>{{ inventory.startDate | date }}</td>
+        <td>{{ inventory.endDate | date }}</td>
+        <td>{{ inventory.scheduledDays }}</td>
+        <td>{{ inventory.meals }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

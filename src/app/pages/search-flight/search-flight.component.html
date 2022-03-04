@@ -1,0 +1,58 @@
+<h3>Search Flight</h3>
+<form (ngSubmit)="onSubmit()" [formGroup]="searchForm">
+  <div class="form-group">
+    <label for="fromPlace">From</label>
+    <select formControlName="fromPlace" id="fromPlace" class="form-control">
+      <option *ngFor="let airport of airports" [value]="airport.city">
+        {{ airport.name }}({{ airport.city }})
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="toPlace">To</label>
+    <select formControlName="toPlace" id="toPlace" class="form-control">
+      <option *ngFor="let airport of airports" [value]="airport.city">
+        {{ airport.name }}({{ airport.city }})
+      </option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="date">Date</label>
+    <input type="date" class="form-control" id="date" formControlName="date" />
+  </div>
+  <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<table class="table mt-3">
+  <thead class="thead-light">
+    <tr>
+      <th>Logo</th>
+      <th scope="col">Airline</th>
+      <th scope="col">Flight #</th>
+      <th scope="col">Date</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Price</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let flight of flights">
+      <td>
+        <img src="{{ flight.logoPath }}" class="rounded" height="40" alt="" />
+      </td>
+      <td>{{ flight.airlineName }}</td>
+      <td>{{ flight.flightNumber }}</td>
+      <td>{{ flight.date | date }}</td>
+      <td>{{ flight.fromPlace }}</td>
+      <td>{{ flight.toPlace }}</td>
+      <td>${{ flight.price }}</td>
+      <td>
+        <a
+          [routerLink]="['/user/flight/book', flight.inventoryId]"
+          class="btn btn-primary"
+          >Book</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,49 @@
+<div *ngIf="booking != null">
+  <div class="card">
+    <div class="card-body row mb-2">
+      <div class="col-md-6">
+        <img
+          src="{{ booking.logoPath }}"
+          height="100"
+          width="100"
+          class="rounded-circle"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <button class="btn btn-primary">Cancel</button>
+      </div>
+    </div>
+    <div class="card-body row">
+      <div class="col-md-6">Airline: {{ booking.airlineName }}</div>
+      <div class="col-md-6">Flight#: {{ booking.flightNumber }}</div>
+      <div class="col-md-6">Date: {{ booking.date | date }}</div>
+      <div class="col-md-6">Name: {{ booking.name }}</div>
+      <div class="col-md-6">Email: {{ booking.email }}</div>
+      <div class="col-md-6">Meals: {{ booking.meals }}</div>
+      <div class="col-md-6">From: {{ booking.fromPlace }}</div>
+      <div class="col-md-6">To: {{ booking.toPlace }}</div>
+      <div class="col-md-6">Seats: {{ booking.noOfSeats }}</div>
+      <div class="col-md-6">Price: {{ booking.noOfSeats * booking.price }}</div>
+    </div>
+  </div>
+  <table *ngIf="booking.bookingDetails != null" class="table mt-3">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Age</th>
+        <th scope="col">Seat No</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let detail of booking.bookingDetails">
+        <td>{{ detail.name }}</td>
+        <td>{{ detail.gender }}</td>
+        <td>{{ detail.age }}</td>
+        <td>{{ detail.seatNumber }}</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

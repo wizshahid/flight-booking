@@ -1,0 +1,20 @@
+<table class="table mt-3">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Contact No</th>
+      <th scope="col">Address</th>
+      <th scope="col">Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let airline of airlines">
+      <td>{{ airline.name }}</td>
+      <td>{{ airline.contactNo }}</td>
+      <td>{{ airline.contactAddress }}</td>
+      <td>{{ airline.status }}</td>
+      <td><a [routerLink]="['/admin/airlines/', airline.id]">Details</a></td>
+    </tr>
+  </tbody>
+</table>
