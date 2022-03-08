@@ -32,6 +32,7 @@
       <th scope="col">Seats</th>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
+      <th scope="col">Type</th>
       <th></th>
     </tr>
   </thead>
@@ -42,13 +43,14 @@
       </td>
       <td>{{ booking.airlineName }}</td>
       <td>{{ booking.flightNumber }}</td>
-      <td>{{ booking.date }}</td>
+      <td>{{ booking.date | date }}</td>
       <td>{{ booking.fromPlace }}</td>
       <td>{{ booking.toPlace }}</td>
       <td>${{ booking.price * booking.noOfSeats }}</td>
       <td>{{ booking.noOfSeats }}</td>
       <td>{{ booking.name }}</td>
       <td>{{ booking.email }}</td>
+      <td>{{ booking.flightType }}</td>
       <td>
         <a [routerLink]="['/user/flight/booking', booking.id]">Details</a>
       </td>

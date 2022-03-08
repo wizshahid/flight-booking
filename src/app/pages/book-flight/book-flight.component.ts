@@ -53,6 +53,7 @@ export class BookFlightComponent implements OnInit {
     logoPath: '',
     price: 0,
     toPlace: '',
+    flightType: '',
   };
 
   get details() {

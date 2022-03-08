@@ -7,4 +7,5 @@ export interface FlightModel {
   price: number;
   toPlace: string;
   logoPath: string;
+  flightType: string;
 }

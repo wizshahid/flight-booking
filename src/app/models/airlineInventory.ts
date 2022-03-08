@@ -15,6 +15,7 @@ export interface AirlineInventory {
   ticketPrice: number;
   numberOfRows: number;
   meals: Meals;
+  flightType: string;
 }
 
 export interface InventoryDetails extends AirlineInventory {

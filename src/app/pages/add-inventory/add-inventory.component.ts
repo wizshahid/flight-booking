@@ -37,6 +37,7 @@ export class AddInventoryComponent implements OnInit {
     ticketPrice: 0,
     numberOfRows: 0,
     meals: Meals.None,
+    flightType: 'Oneway',
   });
 
   ngOnInit(): void {

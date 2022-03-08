@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { AirlineDetails, AirlineModel } from 'src/app/models/airlineModel';
 import { Airport } from 'src/app/models/airport';
 import { FlightModel } from 'src/app/models/flightModel';
 import { AirlineService } from 'src/app/services/airline.service';
@@ -14,10 +15,13 @@ export class SearchFlightComponent implements OnInit {
     toPlace: '',
     fromPlace: '',
     date: new Date(),
+    flightType: 'Oneway',
+    airlineName: '',
   });
 
   flights: FlightModel[] = [];
   airports: Airport[] = [];
+  airlines: AirlineModel[] = [];
 
   constructor(
     private airlineService: AirlineService,
@@ -29,6 +33,10 @@ export class SearchFlightComponent implements OnInit {
     this.airportService
       .getAirports()
       .subscribe((data) => (this.airports = data));
+
+    this.airlineService
+      .getAirlines(true)
+      .subscribe((data) => (this.airlines = data));
     this.onSubmit();
   }
 

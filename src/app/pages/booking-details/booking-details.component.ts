@@ -38,6 +38,7 @@ export class BookingDetailsComponent implements OnInit {
     noOfSeats: 0,
     logoPath: '',
     status: '',
+    flightType: '',
   };
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {

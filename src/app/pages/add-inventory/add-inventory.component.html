@@ -1,4 +1,4 @@
-<h3>Add Airline</h3>
+<h3>Add Inventory</h3>
 <form (ngSubmit)="onSubmit()" [formGroup]="inventoryForm">
   <div class="row">
     <div class="form-group col-md-4">
@@ -24,6 +24,18 @@
         formControlName="flightNumber"
         required
       />
+    </div>
+    <div class="form-group col-md-4">
+      <label for="flightType">FlighType</label>
+      <select
+        formControlName="flightType"
+        id="flightType"
+        class="form-control"
+        required
+      >
+        <option value="Oneway" [selected]="true">One way</option>
+        <option value="Roundtrip">Round trip</option>
+      </select>
     </div>
 
     <div class="form-group col-md-4">
