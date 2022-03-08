@@ -29,10 +29,10 @@ export class SearchFlightComponent implements OnInit {
     this.airportService
       .getAirports()
       .subscribe((data) => (this.airports = data));
+    this.onSubmit();
   }
 
   onSubmit() {
-    console.log();
     this.airlineService.searchFlight(this.searchForm.value).subscribe({
       next: (data) => {
         this.flights = data;

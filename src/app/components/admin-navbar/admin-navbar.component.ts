@@ -7,12 +7,13 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './admin-navbar.component.html',
 })
 export class AdminNavbarComponent implements OnInit {
-  isAdminLoggedIn: boolean = false;
   constructor(private authService: AuthService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.isAdminLoggedIn = this.authService.isAdminLoggedIn();
-  }
+  ngOnInit(): void {}
+
+  isAdminLoggedIn = () => {
+    return this.authService.isAdminLoggedIn();
+  };
 
   onAdminLogout = () => {
     this.authService.adminLogOut();

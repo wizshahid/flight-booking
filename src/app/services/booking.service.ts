@@ -27,6 +27,21 @@ export class BookingService {
     );
   };
 
+  getMyBookings = (email: string): Observable<BookingResponse[]> => {
+    return this.httpClient.get<BookingResponse[]>(
+      apiUrl + apiUrls.getBookingByEmail + '?emailId=' + email,
+      {
+        headers: this.getHeader(),
+      }
+    );
+  };
+
+  cancelBookings = (pnr: string) => {
+    return this.httpClient.delete(apiUrl + apiUrls.cancelBooking + pnr, {
+      headers: this.getHeader(),
+    });
+  };
+
   getHeader = () => {
     let headers = new HttpHeaders();
     headers = headers.set(

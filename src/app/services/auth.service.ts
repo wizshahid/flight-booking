@@ -11,19 +11,11 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
   login = (authModel: AuthModel): Observable<string> => {
-    return this.httpClient.post<string>(apiUrl + apiUrls.userLogin, authModel, {
-      responseType: 'text' as 'json',
-    });
+    return this.httpClient.post<string>(apiUrl + apiUrls.userLogin, authModel);
   };
 
   adminLogin = (authModel: AuthModel): Observable<string> => {
-    return this.httpClient.post<string>(
-      apiUrl + apiUrls.adminLogin,
-      authModel,
-      {
-        responseType: 'text' as 'json',
-      }
-    );
+    return this.httpClient.post<string>(apiUrl + apiUrls.adminLogin, authModel);
   };
 
   isLoggedIn = (): boolean => {

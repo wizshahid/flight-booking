@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AirlineService } from 'src/app/services/airline.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-add-airline',
@@ -11,7 +12,8 @@ export class AddAirlineComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private airlineService: AirlineService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   airlineForm = this.formBuilder.group({
@@ -40,9 +42,7 @@ export class AddAirlineComponent implements OnInit {
       next: (data) => {
         this.router.navigate(['/admin/airlines']);
       },
-      error: (err) => {
-        alert(err.error);
-      },
+      error: this.messageService.handleError,
     });
   };
 

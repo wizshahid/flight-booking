@@ -9,6 +9,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FlightModel } from 'src/app/models/flightModel';
 import { AirlineService } from 'src/app/services/airline.service';
 import { BookingService } from 'src/app/services/booking.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-book-flight',
@@ -20,7 +21,8 @@ export class BookFlightComponent implements OnInit {
     private airlineService: AirlineService,
     private formBuilder: FormBuilder,
     private router: Router,
-    private bookService: BookingService
+    private bookService: BookingService,
+    private messageService: MessageService
   ) {}
 
   id: string = '';
@@ -91,10 +93,9 @@ export class BookFlightComponent implements OnInit {
     let data = this.bookForm.value;
     data.flightId = this.id;
     data.noOfSeats = data.bookingDetails.length;
-    this.bookService
-      .bookFlight(data)
-      .subscribe((data) =>
-        this.router.navigate(['/user/flight/booking', data.id])
-      );
+    this.bookService.bookFlight(data).subscribe({
+      next: (data) => this.router.navigate(['/user/flight/booking', data.id]),
+      error: this.messageService.handleError,
+    });
   };
 }

@@ -29,8 +29,8 @@ export class AdminLoginComponent implements OnInit {
   onSubmit() {
     console.log();
     this.authService.adminLogin(this.loginForm.value).subscribe({
-      next: (token) => {
-        localStorage['fb_admin_token'] = token;
+      next: (data: any) => {
+        localStorage['fb_admin_token'] = data.token;
         this.router.navigate([this.returnUrl]);
       },
       error: (err) => alert(err.error),

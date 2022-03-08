@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-2">Email:</div>
+      <div class="col-md-7">
+        <input
+          type="email"
+          class="form-control"
+          [value]="email"
+          (change)="onChange($event)"
+        />
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-primary" type="button" (click)="onSearch()">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table mt-3">
+  <thead class="thead-light">
+    <tr>
+      <th>Logo</th>
+      <th scope="col">Airline</th>
+      <th scope="col">Flight #</th>
+      <th scope="col">Date</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th scope="col">Price</th>
+      <th scope="col">Seats</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let booking of bookings">
+      <td>
+        <img src="{{ booking.logoPath }}" class="rounded" height="40" alt="" />
+      </td>
+      <td>{{ booking.airlineName }}</td>
+      <td>{{ booking.flightNumber }}</td>
+      <td>{{ booking.date }}</td>
+      <td>{{ booking.fromPlace }}</td>
+      <td>{{ booking.toPlace }}</td>
+      <td>${{ booking.price * booking.noOfSeats }}</td>
+      <td>{{ booking.noOfSeats }}</td>
+      <td>{{ booking.name }}</td>
+      <td>{{ booking.email }}</td>
+      <td>
+        <a [routerLink]="['/user/flight/booking', booking.id]">Details</a>
+      </td>
+    </tr>
+  </tbody>
+</table>

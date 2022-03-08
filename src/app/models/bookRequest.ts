@@ -26,4 +26,5 @@ export interface BookingResponse extends BookRequest {
   flightNumber: string;
   price: number;
   logoPath: string;
+  status: string;
 }

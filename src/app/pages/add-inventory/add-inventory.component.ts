@@ -6,6 +6,7 @@ import { Airport } from 'src/app/models/airport';
 import { Meals, ScheduledDays } from 'src/app/models/enums/enums';
 import { AirlineService } from 'src/app/services/airline.service';
 import { AirportService } from 'src/app/services/airport.service';
+import { MessageService } from 'src/app/services/message.service';
 
 @Component({
   selector: 'app-add-inventory',
@@ -18,7 +19,8 @@ export class AddInventoryComponent implements OnInit {
     private airportService: AirportService,
     private airlineService: AirlineService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   inventoryForm = this.formBuilder.group({
@@ -48,10 +50,11 @@ export class AddInventoryComponent implements OnInit {
   }
 
   onSubmit = () => {
-    this.airlineService
-      .addInventory(this.inventoryForm.value)
-      .subscribe((data) => {
+    this.airlineService.addInventory(this.inventoryForm.value).subscribe({
+      next: (data) => {
         this.router.navigate(['/admin/airlines', data.airlineId]);
-      });
+      },
+      error: this.messageService.handleError,
+    });
   };
 }

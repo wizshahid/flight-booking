@@ -15,6 +15,7 @@ import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.componen
 import { UserLayoutComponent } from './pages/user-layout/user-layout.component';
 import { BookFlightComponent } from './pages/book-flight/book-flight.component';
 import { BookingDetailsComponent } from './pages/booking-details/booking-details.component';
+import { MyBookingsComponent } from './pages/my-bookings/my-bookings.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user/home', pathMatch: 'full' },
@@ -33,6 +34,11 @@ const routes: Routes = [
       {
         path: 'flight/booking/:id',
         component: BookingDetailsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'flight/bookings',
+        component: MyBookingsComponent,
         canActivate: [AuthGuard],
       },
     ],
@@ -87,4 +93,5 @@ export const routingComponents = [
   UserLayoutComponent,
   BookFlightComponent,
   BookingDetailsComponent,
+  MyBookingsComponent,
 ];

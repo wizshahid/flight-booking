@@ -35,7 +35,6 @@ export class AirlineService {
   };
 
   addAirline = (model: FormData): Observable<AirlineModel[]> => {
-    debugger;
     console.log(model);
     return this.httpClient.post<AirlineModel[]>(
       apiUrl + apiUrls.airlineRegister,

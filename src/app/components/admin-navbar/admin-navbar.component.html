@@ -23,7 +23,7 @@
             >Home</a
           >
         </li>
-        <li class="nav-item" *ngIf="!isAdminLoggedIn">
+        <li class="nav-item" *ngIf="!isAdminLoggedIn()">
           <a
             class="nav-link"
             routerLink="/admin/login"
@@ -32,7 +32,7 @@
           >
         </li>
 
-        <li class="nav-item" *ngIf="isAdminLoggedIn">
+        <li class="nav-item" *ngIf="isAdminLoggedIn()">
           <a
             class="nav-link"
             routerLink="/admin/airlines/add"
@@ -41,7 +41,7 @@
           >
         </li>
 
-        <li class="nav-item" *ngIf="isAdminLoggedIn">
+        <li class="nav-item" *ngIf="isAdminLoggedIn()">
           <a
             class="nav-link"
             routerLink="/admin/airlines"
@@ -50,7 +50,7 @@
           >
         </li>
 
-        <li class="nav-item" *ngIf="isAdminLoggedIn">
+        <li class="nav-item" *ngIf="isAdminLoggedIn()">
           <a
             class="nav-link"
             routerLink="/admin/airlines/inventory"
@@ -59,7 +59,11 @@
           >
         </li>
 
-        <li *ngIf="isAdminLoggedIn" class="nav-item" (click)="onAdminLogout()">
+        <li
+          *ngIf="isAdminLoggedIn()"
+          class="nav-item"
+          (click)="onAdminLogout()"
+        >
           <a class="nav-link">Log out</a>
         </li>
       </ul>

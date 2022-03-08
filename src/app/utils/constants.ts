@@ -13,6 +13,6 @@ export const apiUrls = {
   flight: '/api/v1.0/flight/',
   booking: '/api/v1.0/flight/booking/',
   getBooking: '/api/v1.0/flight/ticket/',
-  getBookingByEmail: '/api/v1.0/flight/booking/history/',
+  getBookingByEmail: '/api/v1.0/flight/booking/history',
   cancelBooking: '/api/v1.0/flight/booking/cancel/',
 };

@@ -32,12 +32,20 @@
             >Search</a
           >
         </li>
-        <li class="nav-item" *ngIf="!isLoggedIn">
+        <li class="nav-item" *ngIf="isLoggedIn()">
+          <a
+            class="nav-link"
+            routerLink="/user/flight/bookings"
+            routerLinkActive="active"
+            >My Bookings</a
+          >
+        </li>
+        <li class="nav-item" *ngIf="!isLoggedIn()">
           <a class="nav-link" routerLink="/user/login" routerLinkActive="active"
             >Login</a
           >
         </li>
-        <li class="nav-item" *ngIf="isLoggedIn" (click)="onLogout()">
+        <li class="nav-item" *ngIf="isLoggedIn()" (click)="onLogout()">
           <a class="nav-link">Log out</a>
         </li>
         <li class="nav-item">
