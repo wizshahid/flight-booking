@@ -1,0 +1,39 @@
+.name {
+  letter-spacing: 3px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.lead {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.list-group-item {
+  border: 0 !important;
+  background: unset;
+  color: #f3f3f3;
+}
+
+.list-group-item:not(:first-child):hover {
+  color: #333;
+  background: #f3f3f3;
+  transform: scale(1.1);
+  transition: 0.3s all ease-in;
+}
+
+.list-group-item:hover a {
+  color: #333;
+}
+
+.list-group-item a {
+  text-decoration: none;
+  color: #f3f3f3;
+}
+
+ul.nav {
+  background: #333;
+  height: 100vh;
+  overflow: hidden;
+}

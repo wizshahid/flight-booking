@@ -16,6 +16,7 @@ import { UserLayoutComponent } from './pages/user-layout/user-layout.component';
 import { BookFlightComponent } from './pages/book-flight/book-flight.component';
 import { BookingDetailsComponent } from './pages/booking-details/booking-details.component';
 import { MyBookingsComponent } from './pages/my-bookings/my-bookings.component';
+import { RegisterComponent } from './pages/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user/home', pathMatch: 'full' },
@@ -25,6 +26,7 @@ const routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent },
       { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
       { path: 'search', component: SearchFlightComponent },
       {
         path: 'flight/book/:id',
@@ -94,4 +96,5 @@ export const routingComponents = [
   BookFlightComponent,
   BookingDetailsComponent,
   MyBookingsComponent,
+  RegisterComponent,
 ];

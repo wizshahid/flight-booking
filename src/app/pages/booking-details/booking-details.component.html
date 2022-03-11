@@ -29,23 +29,24 @@
       <div class="col-md-6">Price: {{ booking.noOfSeats * booking.price }}</div>
     </div>
   </div>
-  <table *ngIf="booking.bookingDetails != null" class="table mt-3">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Age</th>
-        <th scope="col">Seat No</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let detail of booking.bookingDetails">
-        <td>{{ detail.name }}</td>
-        <td>{{ detail.gender }}</td>
-        <td>{{ detail.age }}</td>
-        <td>{{ detail.seatNumber }}</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card mt-3" *ngIf="booking.bookingDetails != null">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Age</th>
+          <th scope="col">Seat No</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detail of booking.bookingDetails">
+          <td>{{ detail.name }}</td>
+          <td>{{ detail.gender }}</td>
+          <td>{{ detail.age }}</td>
+          <td>{{ detail.seatNumber }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

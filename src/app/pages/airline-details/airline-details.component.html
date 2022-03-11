@@ -24,30 +24,32 @@
       <div class="col-md-6">Status: {{ airlineDetails.status }}</div>
     </div>
   </div>
-  <table *ngIf="airlineDetails.inventories != null" class="table mt-3">
-    <thead class="thead-light">
-      <tr>
-        <th scope="col">Flight#</th>
-        <th scope="col">From</th>
-        <th scope="col">To</th>
-        <th scope="col">Start Date</th>
-        <th scope="col">End Date</th>
-        <th scope="col">Scheduled Days</th>
-        <th scope="col">Meals</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let inventory of airlineDetails.inventories">
-        <td>{{ inventory.flightNumber }}</td>
-        <td>{{ inventory.fromPlace }}</td>
-        <td>{{ inventory.toPlace }}</td>
-        <td>{{ inventory.startDate | date }}</td>
-        <td>{{ inventory.endDate | date }}</td>
-        <td>{{ inventory.scheduledDays }}</td>
-        <td>{{ inventory.meals }}</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card mt-3" *ngIf="airlineDetails.inventories != null">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Flight#</th>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Start Date</th>
+          <th scope="col">End Date</th>
+          <th scope="col">Scheduled Days</th>
+          <th scope="col">Meals</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inventory of airlineDetails.inventories">
+          <td>{{ inventory.flightNumber }}</td>
+          <td>{{ inventory.fromPlace }}</td>
+          <td>{{ inventory.toPlace }}</td>
+          <td>{{ inventory.startDate | date }}</td>
+          <td>{{ inventory.endDate | date }}</td>
+          <td>{{ inventory.scheduledDays }}</td>
+          <td>{{ inventory.meals }}</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

@@ -1,169 +1,238 @@
-<h3>Add Inventory</h3>
-<form (ngSubmit)="onSubmit()" [formGroup]="inventoryForm">
-  <div class="row">
-    <div class="form-group col-md-4">
-      <label for="airlineId">Airline</label>
-      <select
-        formControlName="airlineId"
-        id="airlineId"
-        class="form-control"
-        required
-      >
-        <option *ngFor="let airline of airlines" [value]="airline.id">
-          {{ airline.name }}
-        </option>
-      </select>
-    </div>
+<div class="card">
+  <div class="card-header"><h3 class="text-center">Add Inventory</h3></div>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" [formGroup]="inventoryForm">
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="airlineId">Airline</label>
+          <select
+            formControlName="airlineId"
+            id="airlineId"
+            class="form-control"
+            required
+          >
+            <option *ngFor="let airline of airlines" [value]="airline.id">
+              {{ airline.name }}
+            </option>
+          </select>
+          <app-validator
+            [abstractControl]="inventoryForm.get('airlineId')"
+            [message]="'Airline is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
 
-    <div class="form-group col-md-4">
-      <label for="flightNumber">Flight#</label>
-      <input
-        type="text"
-        class="form-control"
-        id="flightNumber"
-        formControlName="flightNumber"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="flightType">FlighType</label>
-      <select
-        formControlName="flightType"
-        id="flightType"
-        class="form-control"
-        required
-      >
-        <option value="Oneway" [selected]="true">One way</option>
-        <option value="Roundtrip">Round trip</option>
-      </select>
-    </div>
+        <div class="form-group col-md-4">
+          <label for="flightNumber">Flight#</label>
+          <input
+            type="text"
+            class="form-control"
+            id="flightNumber"
+            formControlName="flightNumber"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('flightNumber')"
+            [message]="'Flight# is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="flightType">Flight type</label>
+          <select
+            formControlName="flightType"
+            id="flightType"
+            class="form-control"
+            required
+          >
+            <option value="Oneway" [selected]="true">One way</option>
+            <option value="Roundtrip">Round trip</option>
+          </select>
+          <app-validator
+            [abstractControl]="inventoryForm.get('flightType')"
+            [message]="'Flight type is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
 
-    <div class="form-group col-md-4">
-      <label for="fromPlaceId">From</label>
-      <select
-        formControlName="fromPlaceId"
-        id="fromPlaceId"
-        class="form-control"
-        required
-      >
-        <option
-          *ngFor="let airport of airports; let last = last"
-          [value]="airport.id"
-        >
-          {{ airport.name }}({{ airport.city }})
-        </option>
-      </select>
-    </div>
+        <div class="form-group col-md-4">
+          <label for="fromPlaceId">Source</label>
+          <select
+            formControlName="fromPlaceId"
+            id="fromPlaceId"
+            class="form-control"
+            required
+          >
+            <option
+              *ngFor="let airport of airports; let last = last"
+              [value]="airport.id"
+            >
+              {{ airport.name }}({{ airport.city }})
+            </option>
+          </select>
+          <app-validator
+            [abstractControl]="inventoryForm.get('fromPlaceId')"
+            [message]="'Source is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
 
-    <div class="form-group col-md-4">
-      <label for="toPlaceId">To</label>
-      <select
-        formControlName="toPlaceId"
-        id="toPlaceId"
-        class="form-control"
-        required
-      >
-        <option
-          *ngFor="let airport of airports; let i = index"
-          [value]="airport.id"
-        >
-          {{ airport.name }}({{ airport.city }})
-        </option>
-      </select>
-    </div>
+        <div class="form-group col-md-4">
+          <label for="toPlaceId">Destination</label>
+          <select
+            formControlName="toPlaceId"
+            id="toPlaceId"
+            class="form-control"
+            required
+          >
+            <option
+              *ngFor="let airport of airports; let i = index"
+              [value]="airport.id"
+            >
+              {{ airport.name }}({{ airport.city }})
+            </option>
+          </select>
+          <app-validator
+            [abstractControl]="inventoryForm.get('toPlaceId')"
+            [message]="'Destination is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
 
-    <div class="form-group col-md-4">
-      <label for="startDate">Start Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="startDate"
-        formControlName="startDate"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="endDate">End Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="endDate"
-        formControlName="endDate"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="scheduledDays">Scheduled Days</label>
-      <select
-        formControlName="scheduledDays"
-        id="scheduledDays"
-        class="form-control"
-        required
-      >
-        <option value="Daily" [selected]="true">Daily</option>
-        <option value="WeekDays">WeekDays</option>
-        <option value="WeekEnds">WeekEnds</option>
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="meals">Meals</label>
-      <select formControlName="meals" id="meals" class="form-control" required>
-        <option value="None" [selected]="true">None</option>
-        <option value="Veg">Veg</option>
-        <option value="NonVeg">NonVeg</option>
-        <option value="Both">Both</option>
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="instrumentUsed">Instrument used</label>
-      <input
-        type="text"
-        class="form-control"
-        id="instrumentUsed"
-        formControlName="instrumentUsed"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="businessClassSeats">Business Class Seats</label>
-      <input
-        type="number"
-        class="form-control"
-        id="businessClassSeats"
-        formControlName="businessClassSeats"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="nonBusinessClassSeats">Non Business Class Seats</label>
-      <input
-        type="number"
-        class="form-control"
-        id="nonBusinessClassSeats"
-        formControlName="nonBusinessClassSeats"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="ticketPrice">Price</label>
-      <input
-        type="number"
-        class="form-control"
-        id="ticketPrice"
-        formControlName="ticketPrice"
-        required
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="numberOfRows">No. of rows</label>
-      <input
-        type="number"
-        class="form-control"
-        id="numberOfRows"
-        formControlName="numberOfRows"
-        required
-      />
-    </div>
+        <div class="form-group col-md-4">
+          <label for="startDate">Start Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="startDate"
+            formControlName="startDate"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('startDate')"
+            [message]="'Start Date is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="endDate">End Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="endDate"
+            formControlName="endDate"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('endDate')"
+            [message]="'EndDate is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="scheduledDays">Scheduled Days</label>
+          <select
+            formControlName="scheduledDays"
+            id="scheduledDays"
+            class="form-control"
+            required
+          >
+            <option value="Daily" [selected]="true">Daily</option>
+            <option value="WeekDays">WeekDays</option>
+            <option value="WeekEnds">WeekEnds</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="meals">Meals</label>
+          <select
+            formControlName="meals"
+            id="meals"
+            class="form-control"
+            required
+          >
+            <option value="None" [selected]="true">None</option>
+            <option value="Veg">Veg</option>
+            <option value="NonVeg">NonVeg</option>
+            <option value="Both">Both</option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="instrumentUsed">Instrument used</label>
+          <input
+            type="text"
+            class="form-control"
+            id="instrumentUsed"
+            formControlName="instrumentUsed"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('instrumentUsed')"
+            [message]="'Instrument used is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="businessClassSeats">Business Class Seats</label>
+          <input
+            type="number"
+            class="form-control"
+            id="businessClassSeats"
+            formControlName="businessClassSeats"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('businessClassSeats')"
+            [message]="'Business class seats should be atleast 1'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="nonBusinessClassSeats">Non Business Class Seats</label>
+          <input
+            type="number"
+            class="form-control"
+            id="nonBusinessClassSeats"
+            formControlName="nonBusinessClassSeats"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('nonBusinessClassSeats')"
+            [message]="'Non Business class seats should be atleast 1'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="ticketPrice">Price</label>
+          <input
+            type="number"
+            class="form-control"
+            id="ticketPrice"
+            formControlName="ticketPrice"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('ticketPrice')"
+            [message]="'Ticket price should be atleast 1 dollar'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="numberOfRows">No. of rows</label>
+          <input
+            type="number"
+            class="form-control"
+            id="numberOfRows"
+            formControlName="numberOfRows"
+            required
+          />
+          <app-validator
+            [abstractControl]="inventoryForm.get('numberOfRows')"
+            [message]="'No. of rows is required'"
+            [submitted]="submitted"
+          ></app-validator>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Inventory</button>
+    </form>
   </div>
-  <button type="submit" class="btn btn-primary">Add Inventory</button>
-</form>
+</div>

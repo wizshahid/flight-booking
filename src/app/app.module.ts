@@ -11,6 +11,7 @@ import { AdminAuthGuard } from './security/admin-auth-guard';
 import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
 import { UserNavbarComponent } from './components/user-navbar/user-navbar.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ValidatorComponent } from './components/validator/validator.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { ToastrModule } from 'ngx-toastr';
     routingComponents,
     AdminNavbarComponent,
     UserNavbarComponent,
+    ValidatorComponent,
   ],
   imports: [
     BrowserModule,

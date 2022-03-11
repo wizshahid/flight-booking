@@ -3,7 +3,9 @@ import {
   AbstractControl,
   FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
+  Validators,
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { FlightModel } from 'src/app/models/flightModel';
@@ -25,24 +27,30 @@ export class BookFlightComponent implements OnInit {
     private messageService: MessageService
   ) {}
 
-  id: string = '';
+  id = '';
+  bookingId = '';
 
   bookForm = this.formBuilder.group({
-    name: '',
-    email: '',
+    name: new FormControl('', Validators.required),
+    email: new FormControl(
+      '',
+      Validators.compose([Validators.required, Validators.email])
+    ),
     flightId: this.id,
     noOfSeats: '',
     meals: 'None',
     date: new Date(),
     bookingDetails: this.formBuilder.array([
       this.formBuilder.group({
-        name: '',
+        name: new FormControl('', Validators.required),
         gender: 'Male',
         age: 1,
         seatNumber: 1,
       }),
     ]),
   });
+
+  submitted = false;
 
   flight: FlightModel = {
     airlineName: '',
@@ -91,12 +99,15 @@ export class BookFlightComponent implements OnInit {
     });
   }
   onSubmit = () => {
-    let data = this.bookForm.value;
-    data.flightId = this.id;
-    data.noOfSeats = data.bookingDetails.length;
-    this.bookService.bookFlight(data).subscribe({
-      next: (data) => this.router.navigate(['/user/flight/booking', data.id]),
-      error: this.messageService.handleError,
-    });
+    this.submitted = true;
+    if (this.bookForm.valid) {
+      let data = this.bookForm.value;
+      data.flightId = this.id;
+      data.noOfSeats = data.bookingDetails.length;
+      this.bookService.bookFlight(data).subscribe({
+        next: (data) => (this.bookingId = data.id),
+        error: this.messageService.handleError,
+      });
+    }
   };
 }

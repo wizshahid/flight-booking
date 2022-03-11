@@ -1,22 +1,44 @@
-<h3>Login</h3>
-<form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
-  <div class="form-group">
-    <label for="username">Username</label>
-    <input
-      type="text"
-      class="form-control"
-      formControlName="username"
-      id="username"
-    />
+<div class="row d-flex justify-content-center">
+  <div class="col-md-4 card pt-5" style="padding-bottom: 5rem">
+    <div class="text-center">
+      <img
+        width="70px"
+        src="https://img.icons8.com/external-glyph-on-circles-amoghdesign/48/000000/external-aeroplane-travel-and-transport-glyph-on-circles-amoghdesign-3.png"
+      />
+      <h3 class="mt-4">Login</h3>
+    </div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="username"
+          id="username"
+        />
+        <app-validator
+          [abstractControl]="loginForm.get('username')"
+          [message]="'Username is required'"
+          [submitted]="submitted"
+        >
+        </app-validator>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+        />
+        <app-validator
+          [abstractControl]="loginForm.get('password')"
+          [message]="'Password is required'"
+          [submitted]="submitted"
+        >
+        </app-validator>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
   </div>
-  <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      formControlName="password"
-    />
-  </div>
-  <button type="submit" class="btn btn-primary">Login</button>
-</form>
+</div>

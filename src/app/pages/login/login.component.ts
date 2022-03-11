@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -10,8 +15,8 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class LoginComponent implements OnInit {
   loginForm = this.formBuilder.group({
-    username: '',
-    password: '',
+    username: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -23,19 +28,22 @@ export class LoginComponent implements OnInit {
   ) {}
 
   returnUrl: string = '';
+  submitted = false;
   ngOnInit(): void {
     this.returnUrl =
       this.activatedRoute.snapshot.queryParams['returnUrl'] || '/user/search';
   }
 
   onSubmit() {
-    console.log();
-    this.authService.login(this.loginForm.value).subscribe({
-      next: (data: any) => {
-        localStorage['fb_user_token'] = data.token;
-        this.router.navigate([this.returnUrl]);
-      },
-      error: this.messageService.handleError,
-    });
+    this.submitted = true;
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe({
+        next: (data: any) => {
+          localStorage['fb_user_token'] = data.token;
+          this.router.navigate([this.returnUrl]);
+        },
+        error: this.messageService.handleError,
+      });
+    }
   }
 }

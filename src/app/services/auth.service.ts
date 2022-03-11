@@ -14,6 +14,10 @@ export class AuthService {
     return this.httpClient.post<string>(apiUrl + apiUrls.userLogin, authModel);
   };
 
+  register = (authModel: AuthModel) => {
+    return this.httpClient.post(apiUrl + apiUrls.userRegister, authModel);
+  };
+
   adminLogin = (authModel: AuthModel): Observable<string> => {
     return this.httpClient.post<string>(apiUrl + apiUrls.adminLogin, authModel);
   };

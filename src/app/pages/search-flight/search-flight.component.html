@@ -1,92 +1,105 @@
-<h3>Search Flight</h3>
-<form (ngSubmit)="onSubmit()" [formGroup]="searchForm">
-  <div class="row">
-    <div class="form-group col-md-4">
-      <label for="fromPlace">From</label>
-      <select formControlName="fromPlace" id="fromPlace" class="form-control">
-        <option *ngFor="let airport of airports" [value]="airport.city">
-          {{ airport.name }}({{ airport.city }})
-        </option>
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="toPlace">To</label>
-      <select formControlName="toPlace" id="toPlace" class="form-control">
-        <option *ngFor="let airport of airports" [value]="airport.city">
-          {{ airport.name }}({{ airport.city }})
-        </option>
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="date">Date</label>
-      <input
-        type="date"
-        class="form-control"
-        id="date"
-        formControlName="date"
-      />
-    </div>
-    <div class="form-group col-md-4">
-      <label for="airlineName">Airline</label>
-      <select
-        formControlName="airlineName"
-        id="airlineName"
-        class="form-control"
-        required
-      >
-        <option *ngFor="let airline of airlines" [value]="airline.name">
-          {{ airline.name }}
-        </option>
-      </select>
-    </div>
-    <div class="form-group col-md-4">
-      <label for="flightType">FlighType</label>
-      <select
-        formControlName="flightType"
-        id="flightType"
-        class="form-control"
-        required
-      >
-        <option value="Oneway" [selected]="true">One way</option>
-        <option value="Roundtrip">Round trip</option>
-      </select>
-    </div>
-    <div class="ml-4">
-      <button type="submit" class="btn btn-primary">Search</button>
-    </div>
+<div class="card">
+  <div class="card-header"><h3>Search Flight</h3></div>
+  <div class="card-body">
+    <form (ngSubmit)="onSubmit()" [formGroup]="searchForm">
+      <div class="row">
+        <div class="form-group col-md-4">
+          <label for="fromPlace">From</label>
+          <select
+            formControlName="fromPlace"
+            id="fromPlace"
+            class="form-control"
+          >
+            <option *ngFor="let airport of airports" [value]="airport.city">
+              {{ airport.name }}({{ airport.city }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="toPlace">To</label>
+          <select formControlName="toPlace" id="toPlace" class="form-control">
+            <option *ngFor="let airport of airports" [value]="airport.city">
+              {{ airport.name }}({{ airport.city }})
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="date">Date</label>
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            formControlName="date"
+          />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="airlineName">Airline</label>
+          <select
+            formControlName="airlineName"
+            id="airlineName"
+            class="form-control"
+            required
+          >
+            <option *ngFor="let airline of airlines" [value]="airline.name">
+              {{ airline.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="flightType">FlighType</label>
+          <select
+            formControlName="flightType"
+            id="flightType"
+            class="form-control"
+            required
+          >
+            <option value="Oneway" [selected]="true">One way</option>
+            <option value="Roundtrip">Round trip</option>
+          </select>
+        </div>
+        <div class="ml-4">
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </div>
+    </form>
+    <table class="table mt-3">
+      <thead class="thead-dark">
+        <tr>
+          <th>Logo</th>
+          <th scope="col">Airline</th>
+          <th scope="col">Flight #</th>
+          <th scope="col">Date</th>
+          <th scope="col">From</th>
+          <th scope="col">To</th>
+          <th scope="col">Price</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let flight of flights">
+          <td>
+            <img
+              src="{{ flight.logoPath }}"
+              class="rounded"
+              height="40"
+              alt=""
+            />
+          </td>
+          <td>{{ flight.airlineName }}</td>
+          <td>{{ flight.flightNumber }}</td>
+          <td>{{ flight.date | date }}</td>
+          <td>{{ flight.fromPlace }}</td>
+          <td>{{ flight.toPlace }}</td>
+          <td>${{ flight.price }}</td>
+          <td>
+            <a
+              [routerLink]="['/user/flight/book', flight.inventoryId]"
+              class="btn btn-primary"
+              >Book</a
+            >
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</form>
-<table class="table mt-3">
-  <thead class="thead-light">
-    <tr>
-      <th>Logo</th>
-      <th scope="col">Airline</th>
-      <th scope="col">Flight #</th>
-      <th scope="col">Date</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
-      <th scope="col">Price</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let flight of flights">
-      <td>
-        <img src="{{ flight.logoPath }}" class="rounded" height="40" alt="" />
-      </td>
-      <td>{{ flight.airlineName }}</td>
-      <td>{{ flight.flightNumber }}</td>
-      <td>{{ flight.date | date }}</td>
-      <td>{{ flight.fromPlace }}</td>
-      <td>{{ flight.toPlace }}</td>
-      <td>${{ flight.price }}</td>
-      <td>
-        <a
-          [routerLink]="['/user/flight/book', flight.inventoryId]"
-          class="btn btn-primary"
-          >Book</a
-        >
-      </td>
-    </tr>
-  </tbody>
-</table>
+</div>

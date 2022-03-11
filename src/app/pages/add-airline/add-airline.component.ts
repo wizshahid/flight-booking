@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AirlineService } from 'src/app/services/airline.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -17,12 +17,14 @@ export class AddAirlineComponent implements OnInit {
   ) {}
 
   airlineForm = this.formBuilder.group({
-    name: '',
+    name: new FormControl('', Validators.required),
     contactAddress: '',
     contactNo: '',
     file: '',
-    dfile: '',
+    dfile: new FormControl('', Validators.required),
   });
+
+  submitted = false;
 
   ngOnInit(): void {}
 
@@ -36,14 +38,16 @@ export class AddAirlineComponent implements OnInit {
   }
 
   onSubmit = () => {
-    const formData = this.toFormData(this.airlineForm.value);
-
-    this.airlineService.addAirline(formData).subscribe({
-      next: (data) => {
-        this.router.navigate(['/admin/airlines']);
-      },
-      error: this.messageService.handleError,
-    });
+    this.submitted = true;
+    if (this.airlineForm.valid) {
+      const formData = this.toFormData(this.airlineForm.value);
+      this.airlineService.addAirline(formData).subscribe({
+        next: () => {
+          this.router.navigate(['/admin/airlines']);
+        },
+        error: this.messageService.handleError,
+      });
+    }
   };
 
   toFormData(formValue: any) {

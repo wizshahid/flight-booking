@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AirlineModel } from 'src/app/models/airlineModel';
 import { Airport } from 'src/app/models/airport';
@@ -24,22 +24,23 @@ export class AddInventoryComponent implements OnInit {
   ) {}
 
   inventoryForm = this.formBuilder.group({
-    airlineId: '',
-    flightNumber: '',
-    fromPlaceId: '',
-    toPlaceId: '',
-    startDate: new Date(),
-    endDate: new Date(),
-    scheduledDays: ScheduledDays.Daily,
-    instrumentUsed: '',
-    businessClassSeats: 0,
-    nonBusinessClassSeats: 0,
-    ticketPrice: 0,
-    numberOfRows: 0,
-    meals: Meals.None,
-    flightType: 'Oneway',
+    airlineId: new FormControl('', Validators.required),
+    flightNumber: new FormControl('', Validators.required),
+    fromPlaceId: new FormControl('', Validators.required),
+    toPlaceId: new FormControl('', Validators.required),
+    startDate: new FormControl(new Date(), Validators.required),
+    endDate: new FormControl(new Date(), Validators.required),
+    scheduledDays: new FormControl(ScheduledDays.Daily, Validators.required),
+    instrumentUsed: new FormControl('', Validators.required),
+    businessClassSeats: new FormControl(0, Validators.min(1)),
+    nonBusinessClassSeats: new FormControl(0, Validators.min(1)),
+    ticketPrice: new FormControl(0, Validators.min(1)),
+    numberOfRows: new FormControl(0, Validators.min(1)),
+    meals: new FormControl(Meals.None, Validators.required),
+    flightType: new FormControl('Oneway', Validators.required),
   });
 
+  submitted = false;
   ngOnInit(): void {
     this.airlineService
       .getAirlines(true)
@@ -51,11 +52,13 @@ export class AddInventoryComponent implements OnInit {
   }
 
   onSubmit = () => {
-    this.airlineService.addInventory(this.inventoryForm.value).subscribe({
-      next: (data) => {
-        this.router.navigate(['/admin/airlines', data.airlineId]);
-      },
-      error: this.messageService.handleError,
-    });
+    this.submitted = true;
+    if (this.inventoryForm.valid)
+      this.airlineService.addInventory(this.inventoryForm.value).subscribe({
+        next: (data) => {
+          this.router.navigate(['/admin/airlines', data.airlineId]);
+        },
+        error: this.messageService.handleError,
+      });
   };
 }
