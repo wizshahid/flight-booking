@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from 'src/app/services/booking.service';
 import { BookingResponse } from 'src/app/models/bookRequest';
+import {
+  getDiscountAmount,
+  getFinalAmount,
+  getPrice,
+} from 'src/app/utils/constants';
 
 @Component({
   templateUrl: './my-bookings.component.html',

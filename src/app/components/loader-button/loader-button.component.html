@@ -1,0 +1,14 @@
+<button
+  class="btn btn-primary {{ class }}"
+  type="{{ type }}"
+  [disabled]="submitting"
+>
+  <span
+    *ngIf="submitting"
+    class="spinner-border spinner-border-sm mr-2"
+    role="status"
+    aria-hidden="true"
+  ></span>
+  <ng-content></ng-content>
+  <ng-container *ngIf="submitting">...</ng-container>
+</button>

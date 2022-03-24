@@ -36,7 +36,9 @@
           [submitted]="submitted"
         ></app-validator>
       </div>
-      <button type="submit" class="btn btn-primary btn-block">Login</button>
+      <app-loader-button [submitting]="submitting" class="btn-block"
+        >Login</app-loader-button
+      >
     </form>
   </div>
 </div>

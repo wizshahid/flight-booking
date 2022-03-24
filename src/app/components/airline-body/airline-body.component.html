@@ -1,0 +1,15 @@
+<div class="row airline-body" [class.selected]="selected">
+  <div class="col-md-2">
+    <div
+      class="airline-logo"
+      data-toggle="tooltip"
+      data-placement="bottom"
+      title="{{ flight?.airlineName }}"
+    >
+      <img src="{{ flight?.logoPath }}" alt="" />
+    </div>
+  </div>
+  <div class="col-md-5">{{ flight?.fromPlace }} - {{ flight?.toPlace }}</div>
+  <div class="col-md-3">{{ flight?.flightNumber }}</div>
+  <div class="col-md-2">{{ flight?.price | currency }}</div>
+</div>

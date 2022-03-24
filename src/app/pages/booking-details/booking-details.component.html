@@ -1,52 +1,110 @@
-<div *ngIf="booking != null">
-  <div class="card">
-    <div class="card-body row mb-2">
-      <div class="col-md-6">
-        <img
-          src="{{ booking.logoPath }}"
-          height="100"
-          width="100"
-          class="rounded-circle"
-        />
+<div #content id="content">
+  <ng-container *ngIf="booking != null">
+    <div class="outer-container">
+      <div class="flight-container details row">
+        <div class="col-md-6"><label>Name:</label> {{ booking.name }}</div>
+        <div class="col-md-6"><label>Email:</label> {{ booking.email }}</div>
+        <div class="col-md-6">
+          <label>Flight type:</label> {{ booking.flightType }}
+        </div>
+        <div class="col-md-6">
+          <label>Price:</label>
+          {{ booking | amount }}
+        </div>
+        <div class="col-md-6">
+          <label for="">Discount:</label>
+          {{ booking | discount }}
+        </div>
+        <div class="col-md-6">
+          <label for="">Final Amount:</label>
+          {{ booking | finalAmount }}
+        </div>
+        <div class="col-md-12">
+          <button class="btn btn-primary" (click)="cancelBooking()">
+            Cancel
+          </button>
+        </div>
       </div>
-
-      <div class="col-md-6" *ngIf="booking.status === 'Success'">
-        <button class="btn btn-primary" (click)="cancelBooking()">
-          Cancel
-        </button>
+      <div class="flight-container">
+        <div class="f-col col-span">
+          <div class="f-logo">
+            <img src="{{ booking.outBoundFlight.logoPath }}" alt="" />
+          </div>
+          <div class="flight-name">
+            <div class="sxr">{{ booking.fromPlace.substring(0, 3) }}</div>
+            <div class="f-lead">{{ booking.fromPlace }}</div>
+          </div>
+          <div class="spacer outbound"><i class="fas fa-plane"></i></div>
+          <div class="flight-name">
+            <div class="sxr">{{ booking.toPlace.substring(0, 3) }}</div>
+            <div class="f-lead">{{ booking.toPlace }}</div>
+          </div>
+        </div>
+        <div class="f-col">
+          <div>{{ booking.outBoundFlight.flightNumber }}</div>
+        </div>
+        <div class="f-col">
+          <div>{{ booking.outBoundFlight.airlineName }}</div>
+        </div>
+        <div class="f-col">
+          <div>{{ booking.outBoundFlight.meals }}</div>
+        </div>
       </div>
+      <ng-container *ngIf="booking.flightType === 'RoundTrip'">
+        <div class="flight-container">
+          <div class="f-col col-span">
+            <div class="f-logo">
+              <img src="{{ booking.returnFlight?.logoPath }}" alt="" />
+            </div>
+            <div class="flight-name">
+              <div class="sxr">{{ booking.fromPlace.substring(0, 3) }}</div>
+              <div class="f-lead">{{ booking.fromPlace }}</div>
+            </div>
+            <div class="spacer return"><i class="fas fa-plane"></i></div>
+            <div class="flight-name">
+              <div class="sxr">{{ booking.toPlace.substring(0, 3) }}</div>
+              <div class="f-lead">{{ booking.toPlace }}</div>
+            </div>
+          </div>
+          <div class="f-col">
+            <div>{{ booking.returnFlight?.flightNumber }}</div>
+          </div>
+          <div class="f-col">
+            <div>{{ booking.returnFlight?.airlineName }}</div>
+          </div>
+          <div class="f-col">
+            <div>{{ booking.returnFlight?.meals }}</div>
+          </div>
+        </div>
+      </ng-container>
     </div>
-    <div class="card-body row">
-      <div class="col-md-6">Airline: {{ booking.airlineName }}</div>
-      <div class="col-md-6">Flight#: {{ booking.flightNumber }}</div>
-      <div class="col-md-6">Date: {{ booking.date | date }}</div>
-      <div class="col-md-6">Name: {{ booking.name }}</div>
-      <div class="col-md-6">Email: {{ booking.email }}</div>
-      <div class="col-md-6">Meals: {{ booking.meals }}</div>
-      <div class="col-md-6">From: {{ booking.fromPlace }}</div>
-      <div class="col-md-6">To: {{ booking.toPlace }}</div>
-      <div class="col-md-6">Seats: {{ booking.noOfSeats }}</div>
-      <div class="col-md-6">Price: {{ booking.noOfSeats * booking.price }}</div>
+    <div class="card mt-3" *ngIf="booking.bookingDetails != null">
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="f-col">Name</th>
+            <th scope="f-col">Gender</th>
+            <th scope="f-col">Age</th>
+            <th scope="f-col">Seat No</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let detail of booking.bookingDetails">
+            <td>{{ detail.name }}</td>
+            <td>{{ detail.gender }}</td>
+            <td>{{ detail.age }}</td>
+            <td>{{ detail.seatNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="card mt-3" *ngIf="booking.bookingDetails != null">
-    <table class="table">
-      <thead class="thead-dark">
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Gender</th>
-          <th scope="col">Age</th>
-          <th scope="col">Seat No</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let detail of booking.bookingDetails">
-          <td>{{ detail.name }}</td>
-          <td>{{ detail.gender }}</td>
-          <td>{{ detail.age }}</td>
-          <td>{{ detail.seatNumber }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  </ng-container>
 </div>
+
+<app-loader-button
+  [submitting]="loadingPdf"
+  class="mt-2"
+  (click)="printPage(content)"
+>
+  Download
+</app-loader-button>

@@ -9,3 +9,8 @@ export interface FlightModel {
   logoPath: string;
   flightType: string;
 }
+
+export interface FlightList {
+  outboundFlights: FlightModel[];
+  returnFlights: FlightModel[];
+}

@@ -17,6 +17,8 @@ import { BookFlightComponent } from './pages/book-flight/book-flight.component';
 import { BookingDetailsComponent } from './pages/booking-details/booking-details.component';
 import { MyBookingsComponent } from './pages/my-bookings/my-bookings.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { DiscountCouponComponent } from './pages/dicount-coupon/discount-coupon.component';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'user/home', pathMatch: 'full' },
@@ -29,7 +31,7 @@ const routes: Routes = [
       { path: 'register', component: RegisterComponent },
       { path: 'search', component: SearchFlightComponent },
       {
-        path: 'flight/book/:id',
+        path: 'flight/book',
         component: BookFlightComponent,
         canActivate: [AuthGuard],
       },
@@ -52,6 +54,16 @@ const routes: Routes = [
       {
         path: 'airlines',
         component: AirlinesComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: 'coupons',
+        component: DiscountCouponComponent,
+        canActivate: [AdminAuthGuard],
+      },
+      {
+        path: 'reports',
+        component: ReportsComponent,
         canActivate: [AdminAuthGuard],
       },
       {
@@ -97,4 +109,6 @@ export const routingComponents = [
   BookingDetailsComponent,
   MyBookingsComponent,
   RegisterComponent,
+  DiscountCouponComponent,
+  ReportsComponent,
 ];

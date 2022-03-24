@@ -1,7 +1,7 @@
 export interface AirlineSearchModel {
-  toPlace: string;
-  fromPlace: string;
+  toPlaceId: string;
+  fromPlaceId: string;
   date: Date;
-  airlineName: '';
-  flghtType: string;
+  flightType: string;
+  returnDate: Date;
 }

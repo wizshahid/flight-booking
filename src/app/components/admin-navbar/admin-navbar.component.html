@@ -6,27 +6,61 @@
     <label class="mt-2 name">Flight Booking</label>
     <div class="lead">Admin Panel</div>
   </li>
-  <li class="list-group-item">
+  <li class="list-group-item" routerLink="/">
     <a routerLink="/" routerLinkActive="active">Home</a>
   </li>
-  <li class="list-group-item" *ngIf="!isAdminLoggedIn()">
+  <li
+    class="list-group-item"
+    routerLink="/admin/login"
+    *ngIf="!isAdminLoggedIn()"
+  >
     <a routerLink="/admin/login" routerLinkActive="active">Login</a>
   </li>
 
-  <li class="list-group-item" *ngIf="isAdminLoggedIn()">
+  <li
+    routerLink="/admin/airlines/add"
+    class="list-group-item"
+    *ngIf="isAdminLoggedIn()"
+  >
     <a routerLink="/admin/airlines/add" routerLinkActive="active"
       >Add Airline</a
     >
   </li>
 
-  <li class="list-group-item" *ngIf="isAdminLoggedIn()">
+  <li
+    class="list-group-item"
+    routerLink="/admin/airlines"
+    *ngIf="isAdminLoggedIn()"
+  >
     <a routerLink="/admin/airlines" routerLinkActive="active">Airlines</a>
   </li>
 
-  <li class="list-group-item" *ngIf="isAdminLoggedIn()">
+  <li
+    class="list-group-item"
+    routerLink="/admin/coupons"
+    *ngIf="isAdminLoggedIn()"
+  >
+    <a routerLink="/admin/coupons" routerLinkActive="active"
+      >Discount Coupons</a
+    >
+  </li>
+
+  <li
+    class="list-group-item"
+    routerLink="/admin/airlines/inventory"
+    *ngIf="isAdminLoggedIn()"
+  >
     <a routerLink="/admin/airlines/inventory" routerLinkActive="active"
       >Add Inventory</a
     >
+  </li>
+
+  <li
+    class="list-group-item"
+    routerLink="/admin/reports"
+    *ngIf="isAdminLoggedIn()"
+  >
+    <a routerLink="/admin/reports" routerLinkActive="active">Reports</a>
   </li>
 
   <li

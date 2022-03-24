@@ -1,23 +1,110 @@
 <div *ngIf="bookingId === ''">
-  <div class="card">
-    <div class="card-body row mb-2">
-      <div class="col-md-6">
-        <img
-          src="{{ flight.logoPath }}"
-          height="100"
-          width="100"
-          class="rounded-circle"
-        />
+  <div class="outer-container">
+    <div class="flight-container details row">
+      <div class="col-md-4">
+        <label>Flight type:</label> {{ state.flightType }}
+      </div>
+      <div class="col-md-4">
+        <label>Price:</label>
+        ${{ getPrice() }}
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-3">Discount Coupon:</div>
+          <div class="col-md-6">
+            <input
+              type="text"
+              class="form-control"
+              [disabled]="discountModel != null"
+              [(ngModel)]="code"
+            />
+          </div>
+          <div class="col-md-3">
+            <button
+              class="btn"
+              *ngIf="discountModel == null"
+              type="button"
+              (click)="applyCoupon()"
+            >
+              Apply
+            </button>
+            <button
+              class="btn"
+              *ngIf="discountModel != null"
+              type="button"
+              (click)="removeCoupon()"
+            >
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="discountModel != null">
+        <div class="col-md-4">
+          <label>Discount Percent:</label>
+          {{ discountModel?.discountPercent }} %
+        </div>
+        <div class="col-md-4">
+          <label>Discount Amount:</label>
+          ${{ getDiscountAmount() }}
+        </div>
+
+        <div class="col-md-4">
+          <label>Final Amount:</label>
+          ${{ getFinalAmount() }}
+        </div>
+      </ng-container>
+    </div>
+    <div class="flight-container">
+      <div class="f-col col-span">
+        <div class="f-logo">
+          <img src="{{ outBoundFlight.logoPath }}" alt="" />
+        </div>
+        <div class="flight-name">
+          <div class="sxr">{{ outBoundFlight.fromPlace.substring(0, 3) }}</div>
+          <div class="f-lead">{{ outBoundFlight.fromPlace }}</div>
+        </div>
+        <div class="spacer outbound"><i class="fas fa-plane"></i></div>
+        <div class="flight-name">
+          <div class="sxr">{{ outBoundFlight.toPlace.substring(0, 3) }}</div>
+          <div class="f-lead">{{ outBoundFlight.toPlace }}</div>
+        </div>
+      </div>
+      <div class="f-col">
+        <div>{{ outBoundFlight.flightNumber }}</div>
+      </div>
+      <div class="f-col">
+        <div>{{ outBoundFlight.airlineName }}</div>
       </div>
     </div>
-    <div class="card-body row">
-      <div class="col-md-6">Airline: {{ flight.airlineName }}</div>
-      <div class="col-md-6">Flight No.: {{ flight.flightNumber }}</div>
-      <div class="col-md-6">From: {{ flight.fromPlace }}</div>
-      <div class="col-md-6">To: {{ flight.toPlace }}</div>
-      <div class="col-md-6">Price: {{ flight.price }}</div>
-      <div class="col-md-6">Flight Type: {{ flight.flightType }}</div>
-    </div>
+    <ng-container *ngIf="state.flightType === 'Roundtrip'">
+      <div class="flight-container">
+        <div class="f-col col-span">
+          <div class="f-logo">
+            <img src="{{ returnFlight?.logoPath }}" alt="" />
+          </div>
+          <div class="flight-name">
+            <div class="sxr">
+              {{ returnFlight?.toPlace?.substring(0, 3) }}
+            </div>
+            <div class="f-lead">{{ returnFlight?.toPlace }}</div>
+          </div>
+          <div class="spacer return"><i class="fas fa-plane"></i></div>
+          <div class="flight-name">
+            <div class="sxr">
+              {{ returnFlight?.fromPlace?.substring(0, 3) }}
+            </div>
+            <div class="f-lead">{{ returnFlight?.fromPlace }}</div>
+          </div>
+        </div>
+        <div class="f-col">
+          <div>{{ returnFlight?.flightNumber }}</div>
+        </div>
+        <div class="f-col">
+          <div>{{ returnFlight?.airlineName }}</div>
+        </div>
+      </div>
+    </ng-container>
   </div>
   <div class="card p-2">
     <form [formGroup]="bookForm" (submit)="onSubmit()">
@@ -41,21 +128,7 @@
           ></app-validator>
         </div>
         <div class="form-group col-md-6">
-          <label for="date">Date</label>
-          <input
-            type="date"
-            formControlName="date"
-            class="form-control"
-            [valueAsDate]="bookForm.get('date')?.value"
-          />
-          <app-validator
-            [abstractControl]="bookForm.get('date')"
-            [message]="'Date is required'"
-            [submitted]="submitted"
-          ></app-validator>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="meals">Meals</label>
+          <label for="meals">Meal on Outboard</label>
           <select
             formControlName="meals"
             id="meals"
@@ -68,6 +141,22 @@
             <option value="Both">Both</option>
           </select>
         </div>
+        <ng-container *ngIf="state.flightType === 'Roundtrip'">
+          <div class="form-group col-md-6">
+            <label for="returnMeals">Meal on return</label>
+            <select
+              formControlName="returnMeals"
+              id="returnMeals"
+              class="form-control"
+              required
+            >
+              <option value="None" [selected]="true">None</option>
+              <option value="Veg">Veg</option>
+              <option value="NonVeg">NonVeg</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+        </ng-container>
       </div>
       <ng-container formArrayName="bookingDetails">
         <div class="row">
@@ -134,7 +223,7 @@
           </div>
         </ng-container>
       </ng-container>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <app-loader-button [submitting]="submitting">Book</app-loader-button>
     </form>
   </div>
 </div>

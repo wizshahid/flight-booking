@@ -1,0 +1,114 @@
+<div class="card m-2 p-3">
+  <div class="card-header">
+    <h4 class="text-center">Reports</h4>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-3">
+      <label for="">Show</label>
+    </div>
+    <div class="col-md-6 form-group">
+      <select
+        [(ngModel)]="module"
+        class="form-control"
+        (change)="onModuleChange()"
+      >
+        <option value="Airlines">Airlines</option>
+        <option value="Bookings">Bookings</option>
+        <!-- <option value="Inventories">Inventories</option> -->
+      </select>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <app-loader-button (click)="SavePDF(content)"> Save PDF </app-loader-button>
+</div>
+
+<div class="" id="content" #content>
+  <ng-container *ngIf="module === 'Airlines'">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="text-center">Airlines</h3>
+      </div>
+      <div class="card-body">
+        <table class="table mt-3">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Contact No</th>
+              <th scope="col">Address</th>
+              <th scope="col">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let airline of airlines">
+              <td>{{ airline.name }}</td>
+              <td>{{ airline.contactNo }}</td>
+              <td>{{ airline.contactAddress }}</td>
+              <td>{{ airline.status }}</td>
+              <td>
+                <a [routerLink]="['/admin/airlines/', airline.id]">Details</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="module === 'Bookings'">
+    <div class="card mt-3">
+      <div class="card-header">
+        <h4 class="text-center">Bookings</h4>
+      </div>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>Logo</th>
+            <th scope="col">Airline</th>
+            <th scope="col">Flight #</th>
+            <th scope="col">Date</th>
+            <th scope="col">From</th>
+            <th scope="col">To</th>
+            <th scope="col">Price</th>
+            <th scope="col">Discount</th>
+            <th scope="col">Final Amount</th>
+            <th scope="col">Seats</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Type</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let booking of bookings">
+            <td>
+              <img
+                src="{{ booking.outBoundFlight.logoPath }}"
+                class="rounded"
+                height="40"
+                alt=""
+              />
+            </td>
+            <td>{{ booking.outBoundFlight.airlineName }}</td>
+            <td>{{ booking.outBoundFlight.flightNumber }}</td>
+            <td>{{ booking.outBoundFlight.date | date }}</td>
+            <td>{{ booking.fromPlace }}</td>
+            <td>{{ booking.toPlace }}</td>
+            <td>{{ booking | amount }}</td>
+            <td>{{ booking | discount }}</td>
+            <td>{{ booking | finalAmount }}</td>
+            <td>{{ booking.noOfSeats }}</td>
+            <td>{{ booking.name }}</td>
+            <td>{{ booking.email }}</td>
+            <td>{{ booking.flightType }}</td>
+            <td>
+              <a [routerLink]="['/user/flight/booking', booking.id]">Details</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

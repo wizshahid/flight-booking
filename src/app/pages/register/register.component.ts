@@ -22,16 +22,22 @@ export class RegisterComponent implements OnInit {
   ) {}
 
   submitted = false;
+  submitting = false;
   ngOnInit(): void {}
 
   onSubmit() {
     this.submitted = true;
     if (this.registerForm.valid) {
+      this.submitting = true;
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
           this.toastrService.success('Account created successfully');
+          this.submitting = false;
         },
-        error: this.messageService.handleError,
+        error: (e) => {
+          this.submitting = false;
+          this.messageService.handleError(e);
+        },
       });
     }
   }

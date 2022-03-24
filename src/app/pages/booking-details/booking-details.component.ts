@@ -5,6 +5,7 @@ import { BookingResponse, BookDetails } from 'src/app/models/bookRequest';
 import { Meals } from 'src/app/models/enums/enums';
 import { BookingService } from 'src/app/services/booking.service';
 import { MessageService } from 'src/app/services/message.service';
+import { PdfService } from 'src/app/services/pdf.service';
 
 @Component({
   selector: 'app-booking-details',
@@ -16,29 +17,33 @@ export class BookingDetailsComponent implements OnInit {
     private bookingService: BookingService,
     private toastService: ToastrService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private pdfService: PdfService
   ) {}
 
   id: string = '';
   details: BookDetails[] = [];
   booking: BookingResponse = {
-    airlineName: '',
-    flightNumber: '',
     fromPlace: '',
     id: '',
-    price: 0,
     toPlace: '',
     userId: '',
-    date: new Date(),
     bookingDetails: this.details,
     email: '',
-    flightId: '',
-    meals: Meals.None,
     name: '',
     noOfSeats: 0,
-    logoPath: '',
     status: '',
     flightType: '',
+    discountPercent: 0,
+    returnFlight: null,
+    outBoundFlight: {
+      airlineName: '',
+      date: new Date(),
+      flightNumber: '',
+      logoPath: '',
+      meals: Meals.None,
+      price: 0,
+    },
   };
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
@@ -51,7 +56,7 @@ export class BookingDetailsComponent implements OnInit {
 
   cancelBooking = () => {
     this.bookingService.cancelBookings(this.id).subscribe({
-      next: (data) => {
+      next: () => {
         this.booking.status = 'Cancel';
         this.toastService.success('Booking Cancelled Successfully');
         this.router.navigate(['user/flight/bookings']);
@@ -59,4 +64,13 @@ export class BookingDetailsComponent implements OnInit {
       error: this.messageService.handleError,
     });
   };
+
+  loadingPdf = false;
+
+  printPage(content: any) {
+    this.loadingPdf = true;
+    debugger;
+    this.pdfService.SavePDF(content, 'ticket.pdf');
+    this.loadingPdf = false;
+  }
 }

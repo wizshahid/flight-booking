@@ -37,23 +37,6 @@
             [submitted]="submitted"
           ></app-validator>
         </div>
-        <div class="form-group col-md-4">
-          <label for="flightType">Flight type</label>
-          <select
-            formControlName="flightType"
-            id="flightType"
-            class="form-control"
-            required
-          >
-            <option value="Oneway" [selected]="true">One way</option>
-            <option value="Roundtrip">Round trip</option>
-          </select>
-          <app-validator
-            [abstractControl]="inventoryForm.get('flightType')"
-            [message]="'Flight type is required'"
-            [submitted]="submitted"
-          ></app-validator>
-        </div>
 
         <div class="form-group col-md-4">
           <label for="fromPlaceId">Source</label>
@@ -106,6 +89,9 @@
             class="form-control"
             id="startDate"
             formControlName="startDate"
+            [ngModel]="
+              inventoryForm.get('startDate')?.value | date: 'yyyy-MM-dd'
+            "
             required
           />
           <app-validator
@@ -122,6 +108,7 @@
             id="endDate"
             formControlName="endDate"
             required
+            [ngModel]="inventoryForm.get('endDate')?.value | date: 'yyyy-MM-dd'"
           />
           <app-validator
             [abstractControl]="inventoryForm.get('endDate')"
@@ -232,7 +219,9 @@
           ></app-validator>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Add Inventory</button>
+      <app-loader-button [submitting]="submitting"
+        >Add Inventory</app-loader-button
+      >
     </form>
   </div>
 </div>

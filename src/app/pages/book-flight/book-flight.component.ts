@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
@@ -7,10 +8,12 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { DiscountCouponModel } from 'src/app/models/discount-coupon.model';
 import { FlightModel } from 'src/app/models/flightModel';
 import { AirlineService } from 'src/app/services/airline.service';
 import { BookingService } from 'src/app/services/booking.service';
+import { DiscountCouponService } from 'src/app/services/discount-coupon.service';
 import { MessageService } from 'src/app/services/message.service';
 
 @Component({
@@ -19,16 +22,60 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class BookFlightComponent implements OnInit {
   constructor(
-    private route: ActivatedRoute,
-    private airlineService: AirlineService,
     private formBuilder: FormBuilder,
     private router: Router,
     private bookService: BookingService,
-    private messageService: MessageService
-  ) {}
+    private messageService: MessageService,
+    private airlineService: AirlineService,
+    private discountService: DiscountCouponService
+  ) {
+    this.state = this.router.getCurrentNavigation()?.extras.state;
+    if (!this.state) {
+      let state = localStorage.getItem('search-param');
+      if (state) {
+        this.state = JSON.parse(state);
+      } else router.navigate(['/user/search']);
+    } else {
+      localStorage.setItem('search-param', JSON.stringify(this.state));
+    }
+  }
 
-  id = '';
+  discountModel: DiscountCouponModel | null = null;
+
+  state: any;
+
   bookingId = '';
+  code = '';
+
+  applyCoupon = () => {
+    this.discountService.getCouponByCode(this.code).subscribe({
+      next: (data) => (this.discountModel = data),
+      error: (e) => {
+        this.messageService.handleError(e);
+        this.discountModel = null;
+      },
+    });
+  };
+
+  removeCoupon = () => {
+    this.discountModel = null;
+    this.code = '';
+  };
+
+  getPrice = () => {
+    return (
+      (this.outBoundFlight.price + (this.returnFlight?.price || 0)) *
+      this.bookForm.value.bookingDetails.length
+    );
+  };
+
+  getDiscountAmount = () => {
+    return (this.getPrice() * (this.discountModel?.discountPercent || 0)) / 100;
+  };
+
+  getFinalAmount = () => {
+    return this.getPrice() - this.getDiscountAmount();
+  };
 
   bookForm = this.formBuilder.group({
     name: new FormControl('', Validators.required),
@@ -36,10 +83,8 @@ export class BookFlightComponent implements OnInit {
       '',
       Validators.compose([Validators.required, Validators.email])
     ),
-    flightId: this.id,
-    noOfSeats: '',
     meals: 'None',
-    date: new Date(),
+    returnMeals: 'None',
     bookingDetails: this.formBuilder.array([
       this.formBuilder.group({
         name: new FormControl('', Validators.required),
@@ -51,8 +96,21 @@ export class BookFlightComponent implements OnInit {
   });
 
   submitted = false;
+  submitting = false;
 
-  flight: FlightModel = {
+  outBoundFlight: FlightModel = {
+    airlineName: '',
+    date: new Date(),
+    flightNumber: '',
+    fromPlace: '',
+    inventoryId: '',
+    logoPath: '',
+    price: 0,
+    toPlace: '',
+    flightType: '',
+  };
+
+  returnFlight: FlightModel = {
     airlineName: '',
     date: new Date(),
     flightNumber: '',
@@ -91,22 +149,42 @@ export class BookFlightComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.id = params.get('id') || '';
-      this.airlineService.getFlight(this.id).subscribe((data) => {
-        this.flight = data;
+    this.airlineService
+      .getFlight(this.state.outboundFlightId)
+      .subscribe((data) => {
+        this.outBoundFlight = data;
       });
-    });
+
+    if (this.state.flightType === 'Roundtrip') {
+      this.airlineService
+        .getFlight(this.state.returnFlightId)
+        .subscribe((data) => {
+          this.returnFlight = data;
+        });
+    }
   }
   onSubmit = () => {
     this.submitted = true;
+    this.submitting = true;
     if (this.bookForm.valid) {
       let data = this.bookForm.value;
-      data.flightId = this.id;
+      data.outBoundFlightId = this.state.outboundFlightId;
+      data.returnFlightId = this.state.returnFlightId;
       data.noOfSeats = data.bookingDetails.length;
+      data.flightType = this.state.flightType;
+      data.date = this.state.date;
+      data.returnDate = this.state.returnDate;
+      data.couponCode = this.discountModel?.couponCode;
       this.bookService.bookFlight(data).subscribe({
-        next: (data) => (this.bookingId = data.id),
-        error: this.messageService.handleError,
+        next: (data) => {
+          this.bookingId = data.id;
+          this.submitting = false;
+          localStorage.removeItem('search-param');
+        },
+        error: (e) => {
+          this.submitting = false;
+          this.messageService.handleError(e);
+        },
       });
     }
   };

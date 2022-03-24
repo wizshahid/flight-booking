@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
 
   returnUrl: string = '';
   submitted = false;
+  submitting = false;
   ngOnInit(): void {
     this.returnUrl =
       this.activatedRoute.snapshot.queryParams['returnUrl'] || '/user/search';
@@ -36,13 +37,17 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.submitting = true;
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: (data: any) => {
           localStorage['fb_user_token'] = data.token;
           this.router.navigate([this.returnUrl]);
         },
-        error: this.messageService.handleError,
+        error: (e) => {
+          this.submitting = false;
+          this.messageService.handleError(e);
+        },
       });
     }
   }

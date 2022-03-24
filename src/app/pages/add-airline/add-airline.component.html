@@ -52,7 +52,9 @@
           [message]="'Logo is required'"
         ></app-validator>
       </div>
-      <button type="submit" class="btn btn-primary">Add Airline</button>
+      <app-loader-button [submitting]="submitting"
+        >Add Airline</app-loader-button
+      >
     </form>
   </div>
 </div>
